@@ -33,7 +33,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
  * @link https://github.com/ronmarasigan/LavaLust
  * @license https://opensource.org/licenses/MIT MIT License
  */
-
+ 
 /*
 | -------------------------------------------------------------------
 | URI ROUTING
@@ -44,21 +44,27 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 */
 /** @var object $router **/
 
-$router->get('/', 'Welcome::index');
-$router->get('/users', 'UsersController::index');
+// Landing page ('/') now goes straight to the admin login page.
+$router->get('/', 'AuthController::login');
+
+// Requires login — unauthenticated visitors are sent to the login page.
+$router->get('/users', 'UsersController::index')->middleware('auth');
+$router->get('/user/login', 'AuthController::login');
+$router->post('/user/login', 'AuthController::authenticate');
+$router->get('/user/logout', 'AuthController::logout');
+$router->get('/user/products', 'ProductsController::index');
+$router->get('/catalog', 'ProductsController::index');
 
 $router->get('/login', 'AuthController::login');
 $router->post('/login', 'AuthController::authenticate');
+$router->get('/logout', 'AuthController::logout');
+$router->post('/logout', 'AuthController::logout');
 $router->get('/signup', 'AuthController::signup');
 $router->post('/signup', 'AuthController::register');
-$router->post('/logout', 'AuthController::logout');
 
-$router->group(['middleware' => 'auth'], function ($router) {
-	$router->get('/products', 'ProductsController::index');
-	$router->get('/product', 'ProductsController::index');
-	$router->get('/products/create', 'ProductsController::create');
-	$router->post('/products', 'ProductsController::store');
-	$router->get('/products/edit/{id}', 'ProductsController::edit');
-	$router->post('/products/edit/{id}', 'ProductsController::update');
-	$router->post('/products/delete/{id}', 'ProductsController::delete');
-});
+$router->get('/products', 'ProductsController::index');
+$router->get('/products/create', 'ProductsController::create');
+$router->post('/products/create', 'ProductsController::store');
+$router->get('/products/edit/{id}', 'ProductsController::edit');
+$router->post('/products/edit/{id}', 'ProductsController::update');
+$router->post('/products/delete/{id}', 'ProductsController::delete');
