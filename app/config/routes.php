@@ -63,6 +63,7 @@ $router->get('/signup', 'AuthController::signup');
 $router->post('/signup', 'AuthController::register');
 
 $router->get('/products', 'ProductsController::index');
+$router->get('/products/add', 'ProductsController::add');
 $router->get('/products/create', 'ProductsController::create');
 $router->post('/products/create', 'ProductsController::store');
 $router->get('/products/edit/{id}', 'ProductsController::edit');
