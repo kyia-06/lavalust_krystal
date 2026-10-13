@@ -98,7 +98,6 @@ class AuthController extends Controller
 
     private function route_url($path)
     {
-        $public_path = rtrim(str_replace('\\', '/', dirname(str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '/'))), '/');
-        return ($public_path ?: '') . $path;
+        return $path;
     }
 }
